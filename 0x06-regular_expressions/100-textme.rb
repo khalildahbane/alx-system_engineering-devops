@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-# This script parses a log file and prints the sender, receiver and flags
+# Textme
 
-puts ARGV[0].scan(/(?<=from:|to:|flags:)[^\]]*/).join(',')
+puts ARGV[0].scan(/(?<=from:|to:|flags:)[^\]]*/).join(",")
