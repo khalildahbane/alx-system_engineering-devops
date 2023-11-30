@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-# Displays listening ports
+# Script that checks if a host is on the network
 
-netstat -tulpn | grep LISTEN
+netstat -l
