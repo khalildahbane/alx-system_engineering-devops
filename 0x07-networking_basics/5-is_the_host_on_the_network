@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-# Ping an IP address passed as an argument 5 times
+# Script that displays TCP and UDP listening ports
 
-import sys
-import subprocess
+IP="${1}"
 
-def ping_ip(ip):
-    """Ping an IP address passed as an argument 5 times"""
-    ping = subprocess.run(['ping', '-c', '5', ip], stdout=subprocess.PIPE)
-    if ping.returncode == 0:
-        print(ip, 'is alive!')
-    else:
-        print(ip, 'is unreachable')
+fn=$(basename "${BASH_SOURCE[@]}")
+
+if ! [ "$IP" ]; then
+	echo "Usage: ${fn} {IP_ADDRESS}"
+else
+	ping -c 5 "${IP}"
+fi
