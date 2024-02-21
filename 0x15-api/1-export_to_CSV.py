@@ -4,9 +4,9 @@ import csv
 import requests
 import sys
 
+
 if __name__ == "__main__":
     url = 'https://jsonplaceholder.typicode.com/'
-
 
     userid = sys.argv[1]
     user = '{}users/{}'.format(url, userid)
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     json_o = res.json()
     name = json_o.get('username')
 
-      todos = '{}todos?userId={}'.format(url, userid)
+    todos = '{}todos?userId={}'.format(url, userid)
     res = requests.get(todos)
     tasks = res.json()
     l_task = []
