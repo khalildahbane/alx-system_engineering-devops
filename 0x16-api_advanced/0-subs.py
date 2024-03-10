@@ -1,33 +1,18 @@
+#!/usr/bin/python3
+"""
+this doc for module
+"""
 import requests
-from requests.exceptions import HTTPError
 
-def recurse(subreddit, hot_list=[], after=None):
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
-    if after:
-        url += f'?after={after}'
-    try:
-        response = requests.get(url, headers={'User-agent': 'my-app/0.0.1'})
-        response.raise_for_status()
+headers = {"User-Agent": "MyCustomUserAgent/1.0"}
+
+
+def number_of_subscribers(subreddit):
+    """method doc"""
+    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    response = requests.get(url, allow_redirects=False, headers=headers)
+    if response.status_code == 200:
         data = response.json()
-        if data['data']['children']:
-            for post in data['data']['children']:
-                hot_list.append(post['data']['title'])
-            after = data['data']['after']
-            return recurse(subreddit, hot_list, after)
-        else:
-            return None
-    except HTTPError as http_err:
-        if response.status_code == 404:
-            return None
-        else:
-            print(f'HTTP error occurred: {http_err}')
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-
-# Example usage
-hot_list = recurse('python')
-if hot_list:
-    for title in hot_list:
-        print(title)
-else:
-    print('No results found for the given subreddit.')
+        return data["data"]["subscribers"]
+    else:
+        return 0
