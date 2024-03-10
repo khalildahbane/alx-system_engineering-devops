@@ -3,7 +3,7 @@
 Use ReditAPI
 """
 import requests
-
+import sys, json
 
 def number_of_subscribers(subreddit):
     """
