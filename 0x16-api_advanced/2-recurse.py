@@ -1,26 +1,26 @@
 #!/usr/bin/python3
 """
-Use ReditAPI
+this doc for module
 """
 import requests
 
 
-def recurse(subreddit, hot_list=[], after="", count=0):
-    """
-    queries the Reddit API and returns a list containing the titles of all
-    hot articles for a given subreddit. If no results are found for the given
-    subreddit, the function will return None.
-    """
-    url = "https://www.reddit.com/r/{}/hot.json?limit=100".format(subreddit)
-    head = {"User-Agent": "aarizat"}
-    params = {"after": after, "count": count}
-    r = requests.get(url, headers=head, params=params)
-    if r.status_code == 404:
-        return
-    after = r.json().get("data").get("after")
-    count += r.json().get("data").get("dist")
-    for _dict in r.json().get("data").get("children"):
-        hot_list.append(_dict.get("title"))
-    if after is not None:
-        return recurse(subreddit, hot_list, after, count)
-    return hot_list
+def recurse(subreddit, after=None):
+    """method doc"""
+    headers = {"User-Agent": "MyCustomUserAgent/1.0"}
+    params = {"after": after}
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    response = requests.get(url, allow_redirects=False,
+                            headers=headers, params=params)
+    all_posts = []
+    if response.status_code == 200:
+        data = response.json()
+        after = data["data"]["after"]
+        if after is None:
+            return all_posts
+        for post in data["data"]["children"]:
+            all_posts.append(post["data"]["title"])
+        next = recurse(subreddit, after)
+        all_posts.extend(next)
+        return all_posts
+    return None
