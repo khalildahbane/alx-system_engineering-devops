@@ -3,7 +3,7 @@
 Use ReditAPI
 """
 import requests
-
+from requests.exceptions import HTTPError
 
 def number_of_subscribers(subreddit):
     """
